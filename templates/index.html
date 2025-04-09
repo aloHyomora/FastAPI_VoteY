@@ -4,16 +4,7 @@
     <title>My FastAPI, Jinja2 Template Example</title>    
 </head>
 <body>
-    {% set navigation = [] %}
-
-    {% do navigation.append('Home') %}
-    {% do navigation.append('About') %}
-    {% do navigation.append('Contact') %}
-    
-    <ul>
-        {% for item in navigation %}
-            <li>{{ item }}</li>
-        {% endfor %}
-    </ul>
+    <h1>Welcome to FastAPI!</h1>
+    <img src="/img/screenshot.png" alt="Example Image">
 </body>
 </html>
