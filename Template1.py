@@ -26,3 +26,7 @@ def read_dynamic_items(request: Request, item_list: str = ""):
 def template_inherit(request: Request):
     my_text = "FastAPI와 Jinja2 템플릿 상속을 사용한 예제입니다."
     return templates.TemplateResponse("index.html", {"request": request, "text": my_text})
+
+@app.get("/import_example")
+def import_example(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
