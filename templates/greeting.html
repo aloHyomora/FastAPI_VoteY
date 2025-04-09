@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>    
+    <title>FastAPI & Jinja2 with Control Statements Templates</title>    
+<body>
+    {% if time_of_day == "morning" %}
+        <h1>Good Morning, {{username}}</h1>
+    {% elif time_of_day == "afternoon" %}
+        <h1>Good Afternoon, {{username}}</h1>
+    {% elif time_of_day == "evening" %}
+        <h1>Good Evening, {{username}}</h1>
+    {% else %}
+        <h1>Hello, {{username}}</h1>
+    {% endif %}
+</body>
