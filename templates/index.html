@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>    
-    <title>My FastAPI Template Example</title>    
-<body>
-    <h1>Hello, {{username}}</h1>
-</body>
+{% extends "base.html" %}
+{% block content %}
+    <p>{{ text }}</p>
+{% endblock %}
