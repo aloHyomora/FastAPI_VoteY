@@ -47,6 +47,7 @@ def read_root():
 # curl -X POST "http://127.0.0.1:8000/users/" -H "Content-Type: application/json" -d "{\"username\":\"KING\",\"email\":\"King@example.com\"}"
 # curl -X 'GET' "http://127.0.0.1:8000/users/2" -H "accept: application/json"
 # curl -X PUT "http://127.0.0.1:8000/users/1" -H "Content-Type: application/json" -d "{\"username\":\"newName\",\"email\":\"NEW@example.com\"}"
+# curl -X DELETE "http://127.0.0.1:8000/users/3"
 # 사용자를 생성하는 POST API 엔드포인트를 추가합니다.
 @app.post("/users/")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
@@ -87,3 +88,13 @@ def update_user(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_user)
     return {"id": db_user.id, "username": db_user.username, "email": db_user.email}
+
+# Delete API 엔드포인트를 추가합니다.
+@app.delete("/users/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if db_user is None:
+        return {"error": "User not found"}
+    db.delete(db_user)
+    db.commit()
+    return {"message": "User deleted successfully"}
