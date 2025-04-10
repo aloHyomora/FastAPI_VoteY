@@ -45,6 +45,7 @@ def read_root():
     return {"Hello": "World"}
 
 # curl -X POST "http://127.0.0.1:8000/users/" -H "Content-Type: application/json" -d "{\"username\":\"KING\",\"email\":\"King@example.com\"}"
+# curl -X 'GET' "http://127.0.0.1:8000/users/2" -H "accept: application/json"
 # 사용자를 생성하는 POST API 엔드포인트를 추가합니다.
 @app.post("/users/")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
@@ -55,3 +56,12 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     return {"id": new_user.id, "username": new_user.username, "email": new_user.email}    
+
+@app.get("/users/{user_id}")
+def read_user(user_id: int, db: Session = Depends(get_db)):
+    # 주어진 ID를 가진 사용자를 DB에서 조회합니다.
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        return {"error": "User not found"}
+    return {"id": user.id, "username": user.username, "email": user.email}
