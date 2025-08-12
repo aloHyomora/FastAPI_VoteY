@@ -8,6 +8,7 @@ import httpx
 
 from app.core.config import settings
 from app.api.routers import health, items, remote, secure
+from app.api.routers import tasks
 from app.middleware.request_id import RequestIdMiddleware
 from app.services.http_client import _add_headers_hook
 
@@ -51,3 +52,4 @@ app.include_router(health.router, prefix=settings.API_PREFIX)
 app.include_router(items.router, prefix=settings.API_PREFIX)
 app.include_router(remote.router, prefix=settings.API_PREFIX)
 app.include_router(secure.router, prefix=settings.API_PREFIX)
+app.include_router(tasks.router, prefix=settings.API_PREFIX)
