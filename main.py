@@ -19,4 +19,4 @@ class Item(BaseModel): # Pydantic 모델을 정의합니다.
 
 @app.post("/items/")
 def create_item(item: Item):
-    return {"item": item.dict()} # Pydantic 모델을 사용하여 JSON 형식으로 응답을 반환합니다.
+    return {"item": item.model_dump()}  # v2
