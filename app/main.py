@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+from pathlib import Path
 import httpx
 
 from app.core.config import settings
@@ -38,8 +39,12 @@ app.add_middleware(
 # 요청 ID
 app.add_middleware(RequestIdMiddleware)
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+# 존재할 때만 mount/생성
+static_dir = Path("static")
+templates_dir = Path("templates")
+if static_dir.is_dir():
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+templates = Jinja2Templates(directory=str(templates_dir)) if templates_dir.is_dir() else None
 
 # 라우터
 app.include_router(health.router, prefix=settings.API_PREFIX)
