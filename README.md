@@ -16,7 +16,7 @@ Invoke-RestMethod -Method Get -Uri "http://localhost:8000/api/health"
 
 환경 변수(.env)
 - API_KEY: FastAPI가 수신 시 검증할 키.
-- OUTBOUND_BASE_URL: FastAPI가 호출할 대상(Spring) 베이스 URL(예: https://spring-domain/api).
+- OUTBOUND_BASE_URL: FastAPI가 호출할 대상(Spring) 베이스 URL
 - OUTBOUND_API_KEY: FastAPI가 대상 서버로 전송할 API Key.
 - HMAC_SECRET: 양방향 HMAC 서명/검증용 시크릿(서버 간 공유).
 - REQUEST_TIMEOUT: 아웃바운드 요청 타임아웃(초).
@@ -28,6 +28,7 @@ Invoke-RestMethod -Method Get -Uri "http://localhost:8000/api/health"
   - dependencies.py: verify_api_key, verify_hmac.
   - routers/: 도메인 라우터
     - health.py: 헬스
+    - issue_total.py: app/data/json의 issue 관련 파일
     - items.py: API Key 보호 예시
     - secure.py: API Key + HMAC 검증
     - remote.py: 서버→서버 프록시(OUTBOUND_BASE_URL로 호출)
@@ -45,15 +46,8 @@ Invoke-RestMethod -Method Get -Uri "http://localhost:8000/api/health"
   - /api/remote/*: OUTBOUND_BASE_URL로 프록시 호출(상대 경로 사용: "health", "secure/echo" 등)
   - 헤더 자동 첨부: X-API-Key, X-Timestamp, X-Signature, X-Request-ID
 
-보안 헤더 규약(요약)
-- X-API-Key: 공유 키
-- X-Timestamp: UNIX seconds
-- X-Signature: Base64(HMAC-SHA256("METHOD|/api/path|timestamp|" + body bytes))
-- 허용 시계 오차: ±300초
-
 빠른 테스트 예시
 ```powershell
 # 프록시 경유(헤더 불필요)
 Invoke-RestMethod -Method Get  -Uri "http://localhost:8000/api/remote/health"
-Invoke-RestMethod -Method Post -Uri "http://localhost:8000/api/remote/secure-echo" -ContentType "application/json" -Body '{"hello":"world"}'
 ```
