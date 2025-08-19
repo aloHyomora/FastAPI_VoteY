@@ -7,6 +7,8 @@
 빠른 실행
 - .env 설정 후 서버 실행:
 ```powershell
+.\.venv\Scripts\activate
+python -m pip install -r requirements.txt
 python -m uvicorn app.main:app --reload --port 8000
 ```
 - 헬스 체크:
